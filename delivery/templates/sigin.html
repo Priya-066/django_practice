@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Munchly Sign In</title>
+</head>
+<body>
+    <form method="post" action="{% url 'signin1' %}">
+        {% csrf_token %}
+        <label for="name">Username:</label>
+        <input type="text" id="name" name="username" placeholder="Enter your name">
+        <br>
+        <label for="pass">Password:</label>
+        <input type="password" id="pass" name="password" placeholder="Enter your password">
+        <br>
+        <button type="submit">SignIn</button>
+    </form>
+</body>
+</html>
