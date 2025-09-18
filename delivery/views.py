@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from .models import Customer
 from .models import Restaurant
@@ -71,6 +71,38 @@ def add_restaurant(request):
         return render(request, 'show_restaurants.html', {"restaurants": restaurants})
 
     return HttpResponse("Invalid request")
+
+
+def open_update_restaurant(request, restaurant_id):
+    restaurant = get_object_or_404(Restaurant, id=restaurant_id)
+    return render(request, 'update_restaurant.html', {"restaurant": restaurant})
+
+
+def open_show_restaurant(request):
+    restaurants = Restaurant.objects.all()
+    return render(request, "display_restaurants.html", {"restaurants": restaurants})
+
+# Update Restaurant
+def update_restaurant(request, restaurant_id):
+    restaurant = get_object_or_404(Restaurant, id=restaurant_id)
+
+    if request.method == 'POST':
+        restaurant.name = request.POST.get('name')
+        restaurant.picture = request.POST.get('picture')
+        restaurant.cuisine = request.POST.get('cuisine')
+        restaurant.rating = request.POST.get('rating')
+        restaurant.save()
+
+        restaurants = Restaurant.objects.all()
+        return render(request, 'show_restaurants.html', {"restaurants": restaurants})
+    
+def delete_restaurant(request, restaurant_id):
+    restaurant = get_object_or_404(Restaurant, id=restaurant_id)
+
+    if request.method == "POST":
+        restaurant.delete()
+        return redirect("open_show_restaurant")  # make sure this view exists!
+
 
 
     
